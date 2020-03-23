@@ -10,7 +10,7 @@ namespace HMS.Data
 {
     public class HMSContext:DbContext
     {
-        public HMSContext():base("HmsConnectionString")
+        public HMSContext():base("HMSConnectionString")
         {
                
         }
