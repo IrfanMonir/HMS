@@ -30,7 +30,7 @@ namespace HMSNew.Areas.Dashboard.Controllers
 
             if (Id.HasValue)//editing a record
             {
-                var accomodationType = accomodationTypeService.GetAllAccomodationTypeId(Id.Value);
+                var accomodationType = accomodationTypeService.GetAccomodationTypeId(Id.Value);
                 model.Id = accomodationType.Id;
                 model.Name = accomodationType.Name;
                 model.Description = accomodationType.Description;
@@ -51,7 +51,7 @@ namespace HMSNew.Areas.Dashboard.Controllers
             var result = false;
             if (model.Id>0)//editing a record
             {
-                var accomodationType = accomodationTypeService.GetAllAccomodationTypeId(model.Id);
+                var accomodationType = accomodationTypeService.GetAccomodationTypeId(model.Id);
                 accomodationType.Name = model.Name;
                 accomodationType.Description = model.Description;
                 result = accomodationTypeService.UpdateAccomodationType(accomodationType);
@@ -65,6 +65,36 @@ namespace HMSNew.Areas.Dashboard.Controllers
                 result = accomodationTypeService.SaveAccomodationType(accomodationType);
             }
            
+            if (result)
+            {
+                json.Data = new { Success = true };
+            }
+            else
+            {
+                json.Data = new { Success = false, Message = "Unable to perform action on Accomodation Type" };
+            }
+            return json;
+        }
+        [HttpGet]
+        public ActionResult Delete(int Id)
+        {
+            AccomodationTypeActionModel model = new AccomodationTypeActionModel();
+            var accomodationType = accomodationTypeService.GetAccomodationTypeId(Id);
+            model.Id=accomodationType.Id;
+            return PartialView("_Delete",model);
+        }
+
+        [HttpPost]
+        public JsonResult Delete(AccomodationTypeActionModel model)
+        {
+
+            JsonResult json = new JsonResult();
+            var result = false;
+        
+                var accomodationType = accomodationTypeService.GetAccomodationTypeId(model.Id);
+             
+                result = accomodationTypeService.DeleteAccomodationType(accomodationType);
+         
             if (result)
             {
                 json.Data = new { Success = true };
