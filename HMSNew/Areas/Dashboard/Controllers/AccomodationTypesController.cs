@@ -24,27 +24,54 @@ namespace HMSNew.Areas.Dashboard.Controllers
             return PartialView("_Listing", model);
         }
         [HttpGet]
-        public ActionResult Action()
+        public ActionResult Action(int? Id)
         {
             AccomodationTypeActionModel model = new AccomodationTypeActionModel();
+
+            if (Id.HasValue)//editing a record
+            {
+                var accomodationType = accomodationTypeService.GetAllAccomodationTypeId(Id.Value);
+                model.Id = accomodationType.Id;
+                model.Name = accomodationType.Name;
+                model.Description = accomodationType.Description;
+            }
+            else//creating a new record
+            {
+
+            }
+           
             return PartialView("_Action",model);
         }
         [HttpPost]
+       
         public JsonResult Action(AccomodationTypeActionModel model)
         {
+           
             JsonResult json = new JsonResult();
-            AccomodationType accomodationType = new AccomodationType();
-            accomodationType.Name = model.Name;
-            accomodationType.Description = model.Description;
+            var result = false;
+            if (model.Id>0)//editing a record
+            {
+                var accomodationType = accomodationTypeService.GetAllAccomodationTypeId(model.Id);
+                accomodationType.Name = model.Name;
+                accomodationType.Description = model.Description;
+                result = accomodationTypeService.UpdateAccomodationType(accomodationType);
+            }
+            else//creating a new record
+            {
+                AccomodationType accomodationType = new AccomodationType();
+                accomodationType.Name = model.Name;
+                accomodationType.Description = model.Description;
 
-            var result = accomodationTypeService.SaveAccomodationType(accomodationType);
+                result = accomodationTypeService.SaveAccomodationType(accomodationType);
+            }
+           
             if (result)
             {
                 json.Data = new { Success = true };
             }
             else
             {
-                json.Data = new { Success = false, Message = "Unable to add Accomodation Type" };
+                json.Data = new { Success = false, Message = "Unable to perform action on Accomodation Type" };
             }
             return json;
         }
