@@ -40,7 +40,7 @@
             .done(function (response) {
                 if (response.Success)
                 {
-                    location.reload();
+                    window.location.href="@Url.Action("Index", "AccomodationTypes")";
                 }
                 else
                 {

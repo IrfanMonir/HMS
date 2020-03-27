@@ -13,16 +13,20 @@ namespace HMSNew.Areas.Dashboard.Controllers
     {
         AccomodationTypeService accomodationTypeService = new AccomodationTypeService();
         // GET: Dashboard/AccomodationTypes
-        public ActionResult Index()
-        {
-            return View();
-        }
-        public ActionResult Listing()
+        public ActionResult Index(string searchTerm)
         {
             AccomodationTypeListingModel model = new AccomodationTypeListingModel();
-            model.AccomodationTypes = accomodationTypeService.GetAllAccomodationType();
-            return PartialView("_Listing", model);
+
+            model.SearchTerm = searchTerm;
+            model.AccomodationTypes = accomodationTypeService.SearchAccomodationType(searchTerm);
+            return View(model);
         }
+        //public ActionResult Listing()
+        //{
+        //    AccomodationTypeListingModel model = new AccomodationTypeListingModel();
+        //    model.AccomodationTypes = accomodationTypeService.GetAllAccomodationType();
+        //    return PartialView("_Listing", model);
+        //}
         [HttpGet]
         public ActionResult Action(int? Id)
         {
