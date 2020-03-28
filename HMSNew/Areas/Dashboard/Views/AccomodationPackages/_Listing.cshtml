@@ -1,0 +1,39 @@
+﻿@model HMSNew.Areas.Dashboard.ViewModel.AccomodationPackageListingModel
+@if (Model != null && Model.AccomodationPackages!=null && Model.AccomodationPackages.Count()>0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                
+                <th scope="col">Name</th>
+                <th scope="col">Accomodation Type</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var accomodationpackage in Model.AccomodationPackages)
+            {
+                <tr>
+                    <td>
+                    @accomodationpackage.Name
+                    </td>
+                    <td>
+                     @if (accomodationpackage.AccomodationType!=null)
+                     {
+                         @accomodationpackage.AccomodationType.Name
+                     }
+                    </td>
+                    <td>
+                        <button data-href="@Url.Action("Action", "AccomodationPackages",new {ID=accomodationpackage.Id })" type="button" class="data-btn btn btn-primary"data-toggle="modal" data-target="#actionModal"><i class="fas fa-pen mr-1"></i>Edit</button>
+                        <button data-href="@Url.Action("Delete", "AccomodationPackages",new {ID=accomodationpackage.Id })" type="button" class="data-btn btn btn-danger"data-toggle="modal" data-target="#actionModal"><i class="fas fa-trash-alt mr-1"></i>Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}else
+	{
+<div class="alert alert-danger" role="alert">
+    Sorry! NO records exist.
+</div>
+	}

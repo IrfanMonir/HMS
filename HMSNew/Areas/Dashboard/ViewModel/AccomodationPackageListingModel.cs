@@ -1,0 +1,26 @@
+﻿using HMSEntities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace HMSNew.Areas.Dashboard.ViewModel
+{
+    public class AccomodationPackageListingModel
+    {
+        public IEnumerable<AccomodationPackage> AccomodationPackages { get; set; }
+        public string SearchTerm { get; set; }
+
+    }
+    public class AccomodationPackageActionModel
+    {
+        public int Id { get; set; }
+        public int AccomodationTypeId { get; set; }
+        public AccomodationType AccomodationType { get; set; }
+        public string Name { get; set; }
+        public int NoOfRoom { get; set; }
+        public decimal FeePerNight { get; set; }
+        public IEnumerable<AccomodationType> AccomodationTypes { get; set; }
+    }
+    
+}

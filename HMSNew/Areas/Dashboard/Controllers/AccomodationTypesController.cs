@@ -15,12 +15,14 @@ namespace HMSNew.Areas.Dashboard.Controllers
         // GET: Dashboard/AccomodationTypes
         public ActionResult Index(string searchTerm)
         {
+            
             AccomodationTypeListingModel model = new AccomodationTypeListingModel();
 
             model.SearchTerm = searchTerm;
             model.AccomodationTypes = accomodationTypeService.SearchAccomodationType(searchTerm);
             return View(model);
         }
+        //we used it for listing before and later updated in index
         //public ActionResult Listing()
         //{
         //    AccomodationTypeListingModel model = new AccomodationTypeListingModel();
