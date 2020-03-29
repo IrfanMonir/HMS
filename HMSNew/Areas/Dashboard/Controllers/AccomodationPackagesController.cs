@@ -1,6 +1,7 @@
 ﻿using HMS.Services;
 using HMSEntities;
 using HMSNew.Areas.Dashboard.ViewModel;
+using HMSNew.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +15,19 @@ namespace HMSNew.Areas.Dashboard.Controllers
         AccomodationPackageService accomodationPackageService = new AccomodationPackageService();
         AccomodationTypeService accomodationTypeService = new AccomodationTypeService();
         // GET: Dashboard/AccomodationTypes
-        public ActionResult Index(string searchTerm)
+        public ActionResult Index(string searchTerm,int? accomodationTypeId, int? page)
         {
-
+            int recordSize = 3;
+            page = page ?? 1;
             AccomodationPackageListingModel model = new AccomodationPackageListingModel();
 
             model.SearchTerm = searchTerm;
-            model.AccomodationPackages = accomodationPackageService.SearchAccomodationPackage(searchTerm);
+            model.AccomodationTypeId = accomodationTypeId;
+            model.AccomodationPackages = accomodationPackageService.SearchAccomodationPackage(searchTerm, accomodationTypeId,page.Value,recordSize);
+            model.AccomodationTypes = accomodationTypeService.GetAllAccomodationType();
+
+            var totalRecords= accomodationPackageService.SearchAccomodationPackageCount(searchTerm, accomodationTypeId);
+            model.Pager = new Pager(totalRecords, page, recordSize);
             return View(model);
         }
         //we used it for listing before and later updated in index

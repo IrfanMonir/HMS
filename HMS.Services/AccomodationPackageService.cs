@@ -2,6 +2,7 @@
 using HMSEntities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace HMS.Services
             var context = new HMSContext();
             return context.AccomodationPackages.ToList();
         }
-        public IEnumerable<AccomodationPackage> SearchAccomodationPackage(string searchTerm)
+        public IEnumerable<AccomodationPackage> SearchAccomodationPackage(string searchTerm,int? accomodationTypeId,int page,int recordSize)
         {
             var context = new HMSContext();
             var accomodationPackages = context.AccomodationPackages.AsQueryable();
@@ -23,12 +24,35 @@ namespace HMS.Services
             {
                 accomodationPackages = accomodationPackages.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()));
             }
-            return accomodationPackages.ToList();
+            if (accomodationTypeId.HasValue && accomodationTypeId.Value>0)
+            {
+                accomodationPackages = accomodationPackages.Where(a=>a.AccomodationTypeId==accomodationTypeId.Value);
+            }
+            var skip = (page - 1) * recordSize;
+            return accomodationPackages.OrderBy(x=>x.AccomodationTypeId).Skip(skip).Take(recordSize).ToList();
+        }
+
+        public int SearchAccomodationPackageCount(string searchTerm, int? accomodationTypeId)
+        {
+            var context = new HMSContext();
+            var accomodationPackages = context.AccomodationPackages.AsQueryable();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                accomodationPackages = accomodationPackages.Where(a => a.Name.ToLower().Contains(searchTerm.ToLower()));
+            }
+            if (accomodationTypeId.HasValue && accomodationTypeId.Value > 0)
+            {
+                accomodationPackages = accomodationPackages.Where(a => a.AccomodationTypeId == accomodationTypeId.Value);
+            }
+            
+            return accomodationPackages.Count();
         }
         public AccomodationPackage GetAccomodationPackageId(int Id)
         {
-            var context = new HMSContext();
-            return context.AccomodationPackages.Find(Id);
+            using (var context = new HMSContext())
+            {
+                return context.AccomodationPackages.Find(Id);
+            }
         }
         public bool SaveAccomodationPackage(AccomodationPackage accomodationPackage)
         {
