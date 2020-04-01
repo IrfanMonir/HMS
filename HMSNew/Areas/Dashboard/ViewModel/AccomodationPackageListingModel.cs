@@ -9,10 +9,13 @@ namespace HMSNew.Areas.Dashboard.ViewModel
 {
     public class AccomodationPackageListingModel
     {
+       // public IEnumerable<Accomodation> Accomodations { get; set; }//used for accomodationlistingmodel
         public IEnumerable<AccomodationPackage> AccomodationPackages { get; set; }
         public string SearchTerm { get; set; }
         public IEnumerable<AccomodationType> AccomodationTypes { get; internal set; }
         public int? AccomodationTypeId { get; set; }
+
+       // public int? AccomodationPackageId { get; set; }//used for accomodationlistingmodel
         public Pager Pager { get; set; }
     }
     public class AccomodationPackageActionModel

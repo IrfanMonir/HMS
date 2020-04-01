@@ -1,0 +1,32 @@
+﻿using HMSEntities;
+using HMSNew.ViewModels;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace HMSNew.Areas.Dashboard.ViewModel
+{
+    public class UsersListingModel
+    {
+        public IEnumerable<HMSUser> Users { get; set; }
+        public string SearchTerm { get; set; }
+       
+        public string RoleId { get; set; }
+        public IEnumerable<IdentityRole> Roles { get; internal set; }
+        public Pager Pager { get; set; }
+    }
+    public class UsersActionModel
+    {
+       
+        public string Id { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string UserName { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
+        public string Address { get; set; }
+       
+    }
+}
