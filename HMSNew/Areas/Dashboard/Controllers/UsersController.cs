@@ -17,15 +17,17 @@ namespace HMSNew.Areas.Dashboard.Controllers
     {
         private HMSSignInManager _signInManager;
         private HMSUserManager _userManager;
+        private HMSRoleManager _roleManager;
 
         public UsersController()
         {
         }
 
-        public UsersController(HMSUserManager userManager, HMSSignInManager signInManager)
+        public UsersController(HMSUserManager userManager, HMSSignInManager signInManager,HMSRoleManager roleManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         public HMSSignInManager SignInManager
@@ -51,6 +53,17 @@ namespace HMSNew.Areas.Dashboard.Controllers
                 _userManager = value;
             }
         }
+        public HMSRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<HMSRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
 
 
         AccomodationService accomodationService = new AccomodationService();
@@ -65,7 +78,7 @@ namespace HMSNew.Areas.Dashboard.Controllers
             model.SearchTerm = searchTerm;
             model.RoleId = roleId;
             model.Users = SearchUsers(searchTerm,roleId,page.Value,recordSize);
-            // model.AccomodationPackages = accomodationPackageService.GetAllAccomodationPackage();
+            model.Roles = RoleManager.Roles.ToList();
 
             var totalRecords = SearchUsersCount(searchTerm, roleId);
             model.Pager = new Pager(totalRecords, page, recordSize);
@@ -169,6 +182,58 @@ namespace HMSNew.Areas.Dashboard.Controllers
             }
 
             json.Data = new { Success = result.Succeeded, Message = string.Join(",",result.Errors) };
+            return json;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> UserRoles(string Id)
+        {
+            UserRoleModel model = new UserRoleModel();
+            model.Roles = RoleManager.Roles.ToList();
+            var user = await UserManager.FindByIdAsync(Id);
+            var userRoleIds = user.Roles.Select(x => x.RoleId).ToList();
+            model.UserRoles = RoleManager.Roles.Where(x => userRoleIds.Contains(x.Id)).ToList();
+           
+            return PartialView("_UserRoles", model);
+            //else//creating a new record
+            //{
+
+            //}
+
+
+        }
+        [HttpPost]
+
+        public async Task<JsonResult> UserRoles(UsersActionModel model)
+        {
+
+            JsonResult json = new JsonResult();
+
+            IdentityResult result = null;
+            if (!string.IsNullOrEmpty(model.Id))//editing a record
+            {
+                var user = await UserManager.FindByIdAsync(model.Id);
+                user.FullName = model.FullName;
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.Country = model.Country;
+                user.City = model.City;
+                user.Address = model.Address;
+                result = await UserManager.UpdateAsync(user);
+            }
+            else//creating a new record
+            {
+                var user = new HMSUser();
+                user.FullName = model.FullName;
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                user.Country = model.Country;
+                user.City = model.City;
+                user.Address = model.Address;
+                result = await UserManager.CreateAsync(user);
+            }
+
+            json.Data = new { Success = result.Succeeded, Message = string.Join(",", result.Errors) };
             return json;
         }
         [HttpGet]
