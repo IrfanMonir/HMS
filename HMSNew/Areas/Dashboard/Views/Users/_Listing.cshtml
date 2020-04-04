@@ -4,10 +4,10 @@
     <table class="table table-striped">
         <thead>
             <tr>
-
+                <th scope="col">Full Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">User Name</th>
-                <th scope="col">Role</th>
+                <th scope="col">Roles</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -16,13 +16,16 @@
             {
             <tr>
                 <td>
+                    @user.FullName
+                </td>
+                <td>
                     @user.Email
                 </td>
                 <td>
                     @user.UserName
                 </td>
                 <td>
-                  -
+                    @user.Roles.Count
                 </td>
                 <td>
                     <button data-href="@Url.Action("Action", "Users",new {ID=user.Id })" type="button" class="data-btn btn btn-primary" data-toggle="modal" data-target="#actionModal"><i class="fas fa-pen mr-1"></i>Edit</button>
