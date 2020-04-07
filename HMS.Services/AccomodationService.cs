@@ -15,6 +15,11 @@ namespace HMS.Services
             var context = new HMSContext();
             return context.Accomodations.ToList();
         }
+        public IEnumerable<Accomodation> GetAllAccomodationByAccomodationPackage(int accomodationPackageId)
+        {
+            var context = new HMSContext();
+            return context.Accomodations.Where(x=>x.AccomodationPackageId==accomodationPackageId).ToList();
+        }
         public IEnumerable<Accomodation> SearchAccomodation(string searchTerm, int? accomodationPackageId, int page, int recordSize)
         {
             var context = new HMSContext();

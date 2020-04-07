@@ -12,6 +12,12 @@ namespace HMSNew
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapRoute(
+                name: "FEAccomodations",
+                url: "{controller}/{action}/{id}",
+                defaults: new {area ="", controller = "Accomodations", action = "Index", id = UrlParameter.Optional },
+                namespaces:new []{ "HMSNew.Controllers" }
+            );
 
             routes.MapRoute(
                 name: "Default",

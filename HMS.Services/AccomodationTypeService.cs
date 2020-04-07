@@ -30,6 +30,7 @@ namespace HMS.Services
             var context = new HMSContext();
             return context.AccomodationTypes.Find(Id);
         }
+       
         public bool SaveAccomodationType(AccomodationType accomodationType)
         {
             var context = new HMSContext();
