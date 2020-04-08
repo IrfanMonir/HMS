@@ -70,6 +70,10 @@
     <Compile Include="Migrations\202003311127005_identitypropertyadded.designer.cs">
       <DependentUpon>202003311127005_identitypropertyadded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202004071556371_addedpictures.cs" />
+    <Compile Include="Migrations\202004071556371_addedpictures.designer.cs">
+      <DependentUpon>202004071556371_addedpictures.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -92,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003311127005_identitypropertyadded.resx">
       <DependentUpon>202003311127005_identitypropertyadded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202004071556371_addedpictures.resx">
+      <DependentUpon>202004071556371_addedpictures.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

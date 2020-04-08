@@ -353,6 +353,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Dashboard\Data\" />
+    <Folder Include="images\site\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\.DS_Store" />

@@ -13,5 +13,6 @@ namespace HMSEntities
         public virtual AccomodationPackage AccomodationPackage { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public List<AccomodationPicture> AccomodatioPictures { get; set; }
     }
 }
