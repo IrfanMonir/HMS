@@ -14,6 +14,7 @@ namespace HMSNew.Areas.Dashboard.Controllers
     {
         AccomodationPackageService accomodationPackageService = new AccomodationPackageService();
         AccomodationTypeService accomodationTypeService = new AccomodationTypeService();
+        DashboardService dashboardService = new DashboardService();
         // GET: Dashboard/AccomodationTypes
         public ActionResult Index(string searchTerm,int? accomodationTypeId, int? page)
         {
@@ -46,10 +47,12 @@ namespace HMSNew.Areas.Dashboard.Controllers
             {
                 var accomodationPackage = accomodationPackageService.GetAccomodationPackageId(Id.Value);
                 model.Id = accomodationPackage.Id;
+                model.AccomodationTypeId = accomodationPackage.AccomodationTypeId;
                 model.Name = accomodationPackage.Name;
                 model.NoOfRoom = accomodationPackage.NoOfRoom;
                 model.FeePerNight = accomodationPackage.FeePerNight;
-                model.AccomodationTypeId = accomodationPackage.AccomodationTypeId;
+                model.AccomodationPackagePictures = accomodationPackageService.GetPictureByAccomodationPackageId(accomodationPackage.Id);
+               
             }
             model.AccomodationTypes = accomodationTypeService.GetAllAccomodationType();
             return PartialView("_Action", model);
@@ -83,6 +86,11 @@ namespace HMSNew.Areas.Dashboard.Controllers
                 accomodationPackage.NoOfRoom = model.NoOfRoom;
                 accomodationPackage.FeePerNight = model.FeePerNight;
                 accomodationPackage.AccomodationTypeId = model.AccomodationTypeId;
+                //this part is for picture upload
+                List<int> picturesIds = model.PictureIds.Split(',').Select(x => int.Parse(x)).ToList();
+                var pictures = dashboardService.GetPictureByIds(picturesIds);
+                accomodationPackage.AccomodationPackagePictures = new List<AccomodationPackagePicture>();
+                accomodationPackage.AccomodationPackagePictures.AddRange(pictures.Select(x => new AccomodationPackagePicture() { PictureId = x.Id }));
 
                 result = accomodationPackageService.SaveAccomodationPackage(accomodationPackage);
             }

@@ -57,6 +57,17 @@
                 <div class="form-group">
                     <label>Pictures</label>
                     <input id="selectPicture" class="form-control" name="Pictures" type="file" multiple>
+                    <input type="hidden" name="pictureIds" id="pictureIds" value="" />
+                </div>
+                <div id="pictureArea">
+                    @if (Model.AccomodationPackagePictures != null && Model.AccomodationPackagePictures.Count() > 0)
+                    {
+                        foreach (var accomodationPictures in Model.AccomodationPackagePictures)
+                        {
+                            <img src="~/images/site/@accomodationPictures.Picture.PictureUrl" class="img-fluid" style="width:200px" onclick="removePicture(this)" data-id="@accomodationPictures.PictureId"/>
+                        }
+                    }
+
                 </div>
 
             </form>
@@ -71,8 +82,19 @@
         </div>
     </div>
 }
+<div id="imgTemplate">
+    <img src="" class="img-fluid" style="width:200px" onclick="removePicture(this)" />
+</div>
+
 <script>
     $("#actionButton").click(function () {
+        var pictureIds = [];
+        $("#pictureArea img").each(function () {
+            var picId = $(this).attr("data-id");
+            pictureIds.push(picId);
+        });
+        $("#pictureIds").val(pictureIds.join());
+
         $.ajax({
             url: '@Url.Action("Action", "AccomodationPackages")',
             type: "post",
@@ -106,10 +128,21 @@
              contentType: false
             })
             .done(function (response) {
-                
+
+                for (var i = 0; i < response.length; i++) {
+                    var picture = response[i];
+                    var $immgHtml = $("#imgTemplate").clone();
+                    $immgHtml.find("img").attr("src", "/images/site/" + picture.PictureUrl);
+                    $immgHtml.find("img").attr("data-id" + picture.Id)
+                    $("#pictureArea").append($immgHtml.html());
+
+                }
             });
 
-         });
+    });
+    function removePicture(element) {
+        element.remove();
+    }
 </script>
 
 

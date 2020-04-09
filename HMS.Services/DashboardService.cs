@@ -16,5 +16,10 @@ namespace HMS.Services
             context.Pictures.Add(picture);
             return context.SaveChanges() > 0;
         }
+        public IEnumerable<Picture>GetPictureByIds(List<int> pictureIds)
+        {
+            var context = new HMSContext();
+            return pictureIds.Select(x => context.Pictures.Find(x)).ToList();
+        }
     }
 }
