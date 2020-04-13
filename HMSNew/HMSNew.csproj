@@ -302,6 +302,7 @@
     <Content Include="images\room-4.jpg" />
     <Content Include="images\room-5.jpg" />
     <Content Include="images\room-6.jpg" />
+    <Content Include="images\site\defaultImage.jpg" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\google_map.js" />
@@ -315,6 +316,7 @@
     <Content Include="Scripts\modernizr-2.6.2.min.js" />
     <Content Include="Scripts\owl.carousel.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -353,7 +355,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Dashboard\Data\" />
-    <Folder Include="images\site\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\.DS_Store" />
@@ -455,6 +456,7 @@
     <None Include="packages.config" />
     <Content Include="Scripts\.DS_Store" />
     <Content Include="Views\Accomodations\Index.cshtml" />
+    <Content Include="Views\Accomodations\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

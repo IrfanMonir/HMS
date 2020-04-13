@@ -22,5 +22,12 @@ namespace HMSNew.Controllers
             model.Accomodations = accomodationService.GetAllAccomodationByAccomodationPackage(model.selectedAccomodationPackageId);
             return View(model);
         }
+
+        public ActionResult Details(int accomodationPackageId)
+        {
+            AccomodationPackageDetailsViewModel model = new AccomodationPackageDetailsViewModel();
+            model.AccomodationPackage = accomodationPackageService.GetAccomodationPackageId(accomodationPackageId);
+            return View(model);
+        }
     }
 }

@@ -54,10 +54,10 @@ namespace HMS.Services
         }
         public AccomodationPackage GetAccomodationPackageId(int Id)
         {
-            using (var context = new HMSContext())
-            {
-                return context.AccomodationPackages.Find(Id);
-            }
+            var context = new HMSContext();
+            
+            return context.AccomodationPackages.Find(Id);
+            
         }
         public bool SaveAccomodationPackage(AccomodationPackage accomodationPackage)
         {
@@ -69,14 +69,19 @@ namespace HMS.Services
         public bool UpdateAccomodationPackage(AccomodationPackage accomodationPackage)
         {
             var context = new HMSContext();
-            context.Entry(accomodationPackage).State = System.Data.Entity.EntityState.Modified;
+            var existingAccomodationPackage = context.AccomodationPackages.Find(accomodationPackage.Id);
+            context.AccomodationPackagePictures.RemoveRange(existingAccomodationPackage.AccomodationPackagePictures);
+            context.Entry(existingAccomodationPackage).CurrentValues.SetValues(accomodationPackage);
+            context.AccomodationPackagePictures.AddRange(accomodationPackage.AccomodationPackagePictures);
             return context.SaveChanges() > 0;
 
         }
         public bool DeleteAccomodationPackage(AccomodationPackage accomodationPackage)
         {
             var context = new HMSContext();
-            context.Entry(accomodationPackage).State = System.Data.Entity.EntityState.Deleted;
+            var existingAccomodationPackage = context.AccomodationPackages.Find(accomodationPackage.Id);
+            context.AccomodationPackagePictures.RemoveRange(existingAccomodationPackage.AccomodationPackagePictures);
+            context.Entry(existingAccomodationPackage).State = System.Data.Entity.EntityState.Deleted;
             return context.SaveChanges() > 0;
 
         }

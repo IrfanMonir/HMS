@@ -18,7 +18,7 @@ namespace HMSNew.Areas.Dashboard.Controllers
         // GET: Dashboard/AccomodationTypes
         public ActionResult Index(string searchTerm,int? accomodationTypeId, int? page)
         {
-            int recordSize = 3;
+            int recordSize = 5;
             page = page ?? 1;
             AccomodationPackageListingModel model = new AccomodationPackageListingModel();
 
@@ -67,17 +67,25 @@ namespace HMSNew.Areas.Dashboard.Controllers
 
         public JsonResult Action(AccomodationPackageActionModel model)
         {
-
+           
             JsonResult json = new JsonResult();
             var result = false;
+            //this part is for picture upload
+            List<int> picturesIds =!string.IsNullOrEmpty(model.PictureIds) ?model.PictureIds.Split(',').Select(x => int.Parse(x)).ToList():new List<int>();
+            var pictures = dashboardService.GetPictureByIds(picturesIds);
+
             if (model.Id > 0)//editing a record
             {
                 var accomodationPackage = accomodationPackageService.GetAccomodationPackageId(model.Id);
                 accomodationPackage.Name = model.Name;
                 accomodationPackage.NoOfRoom = model.NoOfRoom;
                 accomodationPackage.FeePerNight = model.FeePerNight;
+                accomodationPackage.Description = model.Description;
                 accomodationPackage.AccomodationTypeId = model.AccomodationTypeId;
                 result = accomodationPackageService.UpdateAccomodationPackage(accomodationPackage);
+                //for picture edit
+                accomodationPackage.AccomodationPackagePictures.Clear();
+                accomodationPackage.AccomodationPackagePictures.AddRange(pictures.Select(x => new AccomodationPackagePicture() {AccomodationPackageId=accomodationPackage.Id, PictureId = x.Id }));
             }
             else//creating a new record
             {
@@ -85,10 +93,9 @@ namespace HMSNew.Areas.Dashboard.Controllers
                 accomodationPackage.Name = model.Name;
                 accomodationPackage.NoOfRoom = model.NoOfRoom;
                 accomodationPackage.FeePerNight = model.FeePerNight;
+                accomodationPackage.Description = model.Description;
                 accomodationPackage.AccomodationTypeId = model.AccomodationTypeId;
-                //this part is for picture upload
-                List<int> picturesIds = model.PictureIds.Split(',').Select(x => int.Parse(x)).ToList();
-                var pictures = dashboardService.GetPictureByIds(picturesIds);
+              
                 accomodationPackage.AccomodationPackagePictures = new List<AccomodationPackagePicture>();
                 accomodationPackage.AccomodationPackagePictures.AddRange(pictures.Select(x => new AccomodationPackagePicture() { PictureId = x.Id }));
 

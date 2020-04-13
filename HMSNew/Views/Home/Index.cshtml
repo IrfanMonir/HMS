@@ -167,55 +167,67 @@
         </div>
     </div>
 </div>
-@if (Model.AccomodationTypes!=null && Model.AccomodationTypes.Count()>0)
-{
-
-<div id="colorlib-rooms" class="colorlib-light-grey">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
-                <span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
-                @*<h2>Rooms &amp; Suites</h2>*@
-                <h2>Accomodation Types</h2>
-                <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 animate-box">
-                <div class="owl-carousel owl-carousel2">
-                    @foreach (var accomodationtype in Model.AccomodationTypes)
-                    {
-                        <div class="item">
-                            <a href="/images/room-1.jpg" class="room image-popup-link" style="background-image: url(/images/room-1.jpg);"></a>
-                            <div class="desc text-center">
-                               
-                                <h3>
-                                <a href="@Url.Action("Index","Accomodations",new {area = "", accomodationTypeId=accomodationtype.Id})">
-                                    @accomodationtype.Name
-                                </a>
-                                </h3>
-                                <p class="price">
-                                   @accomodationtype.Description
-                                </p>
-                                <ul>
-                                    <li><i class="icon-check"></i> Only 10 rooms are available</li>
-                                    <li><i class="icon-check"></i> Breakfast included</li>
-                                    <li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
-                                </ul>
-                                <p><a class="btn btn-primary btn-book">Book now!</a></p>
-                            </div>
-                        </div>
-                    }
-
-
+@if (Model.AccomodationTypes != null && Model.AccomodationTypes.Count() > 0)
+    {
+        var i = 0;
+    <div id="colorlib-rooms" class="colorlib-light-grey">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
+                    <span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span>
+                    @*<h2>Rooms &amp; Suites</h2>*@
+                    <h2>Accomodation</h2>
+                    <p>Select Accomodation Types</p>
+                    <p>
+                        @foreach (var accomodationtype in Model.AccomodationTypes)
+                        {
+                            <button class="btn btn-sm changeAccomodationType" data-id="@accomodationtype.Id">
+                                @accomodationtype.Name
+                            </button>
+                        }
+                    </p>
                 </div>
             </div>
-            <div class="col-md-12 text-center animate-box">
-                <a href="#">View all rooms <i class="icon-arrow-right3"></i></a>
-            </div>
+            @foreach (var accomodationtype in Model.AccomodationTypes)
+            {
+                <div data-id="@accomodationtype.Id" class="row accomodationTypesRow" style="@(i!=0 ? "displaynone" : string.Empty)">
+                    <div class="col-md-12 animate-box">
+                        <div class="owl-carousel owl-carousel2">
+                            @foreach (var accomodationPackage in Model.AccomodationPackages.Where(x=>x.AccomodationTypeId==accomodationtype.Id))
+                            {
+                                var thumbnailPicture = accomodationPackage.AccomodationPackagePictures != null && accomodationPackage.AccomodationPackagePictures.Count > 0 ? accomodationPackage.AccomodationPackagePictures.First() : new HMSEntities.AccomodationPackagePicture();
+                                var thubmbnailURL = thumbnailPicture.Picture != null ? thumbnailPicture.Picture.PictureUrl : "defaultImage.jpg";
+                                <div class="item">
+                                    <a href="@Url.Action("Details","Accomodations",new {area = "", accomodationPackageId=accomodationPackage.Id})" class="room image-popup-link" style="background-image: url(/images/site/@thubmbnailURL);"></a>
+                                    <div class="desc text-center">
+                                        <h3>
+                                            <a href="@Url.Action("Details","Accomodations",new {area = "", accomodationPackageId=accomodationPackage.Id})">
+                                                @accomodationPackage.Name
+                                            </a>
+                                        </h3>
+                                        <p class="price">
+                                            @accomodationPackage.FeePerNight
+                                        </p>
+                                        <ul>
+                                            <li><i class="icon-check"></i> Only 10 rooms are available</li>
+                                            <li><i class="icon-check"></i> Breakfast included</li>
+                                            <li><i class="icon-check"></i> Price does not include VAT &amp; services fee</li>
+                                        </ul>
+                                        <p><a class="btn btn-primary btn-book">Book now!</a></p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center animate-box">
+                        <a href="#">View all rooms <i class="icon-arrow-right3"></i></a>
+                    </div>
+                </div>
+                i++;
+            }
+
         </div>
     </div>
-</div>
 }
 
 <div id="colorlib-dining-bar">

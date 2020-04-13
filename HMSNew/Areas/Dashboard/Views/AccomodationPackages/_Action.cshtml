@@ -53,6 +53,10 @@
                     <label>Fee Per Night</label>
                     <input class="form-control" name="FeePerNight" placeholder="Enter Fee Per Night" value="@Model.FeePerNight">
                 </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="Description" placeholder="Enter  Description">@Model.Description</textarea>
+                </div>
 
                 <div class="form-group">
                     <label>Pictures</label>
@@ -64,7 +68,7 @@
                     {
                         foreach (var accomodationPictures in Model.AccomodationPackagePictures)
                         {
-                            <img src="~/images/site/@accomodationPictures.Picture.PictureUrl" class="img-fluid" style="width:200px" onclick="removePicture(this)" data-id="@accomodationPictures.PictureId"/>
+                            <img src="/images/site/@accomodationPictures.Picture.PictureUrl" class="img-fluid" style="width:200px" onclick="removePicture(this)" data-id="@accomodationPictures.PictureId" />
                         }
                     }
 
@@ -94,7 +98,7 @@
             pictureIds.push(picId);
         });
         $("#pictureIds").val(pictureIds.join());
-
+        debugger;
         $.ajax({
             url: '@Url.Action("Action", "AccomodationPackages")',
             type: "post",
@@ -133,7 +137,7 @@
                     var picture = response[i];
                     var $immgHtml = $("#imgTemplate").clone();
                     $immgHtml.find("img").attr("src", "/images/site/" + picture.PictureUrl);
-                    $immgHtml.find("img").attr("data-id" + picture.Id)
+                    $immgHtml.find("img").attr("data-id",picture.Id)
                     $("#pictureArea").append($immgHtml.html());
 
                 }

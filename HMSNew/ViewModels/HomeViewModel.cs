@@ -10,6 +10,7 @@ namespace HMSNew.ViewModels
     {
          
         public IEnumerable<AccomodationType> AccomodationTypes { get; set; }
+        public IEnumerable<AccomodationPackage> AccomodationPackages { get; set; }
 
     }
 }
