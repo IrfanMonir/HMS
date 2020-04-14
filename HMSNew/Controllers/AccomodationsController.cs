@@ -29,5 +29,10 @@ namespace HMSNew.Controllers
             model.AccomodationPackage = accomodationPackageService.GetAccomodationPackageId(accomodationPackageId);
             return View(model);
         }
+        public ActionResult CheckAvailability(CheckAccomodationAvailabilityViewModel model)
+        {
+           
+            return View();
+        }
     }
 }
